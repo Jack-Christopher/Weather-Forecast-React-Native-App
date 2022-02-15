@@ -1,12 +1,12 @@
 import React from "react";
 import { StatusBar } from 'expo-status-bar';
 import { Icon } from 'react-native-elements';
-import { Text, View, TouchableOpacity } from 'react-native';
 import { GetStyles } from '../styles/GetStyles.js';
+import { Text, View, TouchableOpacity } from 'react-native';
 
 const HomeScreen = ({navigation }) => {
 
-    const styles = GetStyles(["container", "appTitle", "button"]);
+    const styles = GetStyles(["container", "appTitle", "button", "icon"]);
 
     return (
         <View style={styles.container}>
@@ -14,24 +14,26 @@ const HomeScreen = ({navigation }) => {
                 Weather Forecast
             </Text>
             
-            <Icon
-                reverse
-                size={75}
-                name='weather-hazy'
-                type='material-community'
-                color='#517fa4'
-            />
+            
+            <View style={styles.icon}>
+                <Icon
+                    reverse
+                    size={64}
+                    name='weather-hazy'
+                    type='material-community'
+                    color='#517fa4'
+                />
+            </View>
 
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
                     console.log("Start button pressed");
-                    alert("Start button pressed");
-                    // navigation.navigate('start');
+                    navigation.navigate('Start');
                 }}
             >
             <Text>
-                Start
+                Set place to search for weather
             </Text>
             </TouchableOpacity>
 
