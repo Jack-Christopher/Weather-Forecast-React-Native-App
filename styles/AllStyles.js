@@ -12,7 +12,7 @@ const AllStyles = {
         color: "#A7CCED",
         fontSize: 32,
         textAlign: "center",
-        marginBottom: 100,
+        marginBottom: 64,
     },
 
     button:
@@ -22,6 +22,11 @@ const AllStyles = {
         margin: 15,
         borderRadius: 7,
     },
+
+    icon:
+    {
+        marginBottom: 30,
+    }
 
 }
 
