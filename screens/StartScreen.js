@@ -12,7 +12,7 @@ class StartScreen extends Component
         this.state =
         {
             location : "",
-            locationId : "",
+            ubication : "",
             weather : ""      
         }
     }
@@ -39,17 +39,17 @@ class StartScreen extends Component
                 "x-rapidapi-key": "46329f91e4msh8baa5b2a7080630p101ab2jsncc33c8e9656b"
             } })
         .then(response => response.json())
-        .then(data => this.setState({locationId: data.locations[0].id}))
+        .then(data => this.setState({ubication: data.locations[0]}))
         .catch(error => console.log(error))
         .then(() => {
-            console.log("Location ID: " + this.state.locationId);
+            console.log("Location ID: " + this.state.ubication.id);
         });
 
         this.getWeather();
     }
 
     getWeather = async () => {
-        let url2 = "https://foreca-weather.p.rapidapi.com/current/" + this.state.locationId + "?tempunit=C&windunit=MS";
+        let url2 = "https://foreca-weather.p.rapidapi.com/current/" + this.state.ubication.id + "?tempunit=C&windunit=MS";
         resp = await fetch(url2, {
             "method": "GET",
             "headers": {
@@ -73,14 +73,9 @@ class StartScreen extends Component
                 </Text>
     
                 <Text style={this.styles.message}>
-                    Your IP is: {this.state.location.ip} and your city must be {this.state.location.city}, so 
-                    the Weather Forecast will be based on your location:
+                    Hello {this.state.location.city} citizen from {this.state.ubication.country}!
+                    The Weather Forecast will be based on your location:
                 </Text>
-    
-                <Text style={this.styles.message}>
-                    The Location ID is: {this.state.locationId}
-                </Text>
-
 
                 <Text style={this.styles.message}>
                     Temperature: {this.state.weather.temperature}°C
@@ -95,7 +90,7 @@ class StartScreen extends Component
                     style={this.styles.button}
                 >
                     <Text style={this.styles.message}>
-                        GetData
+                        Get Data
                     </Text>
                 </TouchableOpacity>
 
