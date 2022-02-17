@@ -26,6 +26,14 @@ const AllStyles = {
     icon:
     {
         marginBottom: 30,
+    },
+
+    message:
+    {
+        marginRight: 30,
+        marginLeft: 30,
+        marginBottom: 30,
+        color: 'white',
     }
 
 }
