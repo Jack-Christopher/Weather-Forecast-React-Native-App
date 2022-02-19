@@ -1,6 +1,6 @@
 import React, { Component, useState, useLayoutEffect  } from "react";
 import { GetStyles } from '../styles/GetStyles.js';
-import { Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, TextInput, TouchableOpacity } from 'react-native';
 
 class SelectedPlaceWeatherScreen extends Component
 {
@@ -8,18 +8,21 @@ class SelectedPlaceWeatherScreen extends Component
     {
         super(props);
 
-        this.styles = GetStyles(["container", "appTitle", "button", "icon", "message", "item", "list"]);
+        this.styles = GetStyles(["container", "appTitle", "button", "icon", "message", "item", "list", "input"]);
         this.state =
         {
-            city : "Lima",
+            city : "",
             ubication : "",
-            weather : ""      
+            weather : "",
+            text : "",
+            loadingData: 0,
         }
-        // this.getIPAddress();
     }
 
-    getCityId = async () => {
-        let url = "https://foreca-weather.p.rapidapi.com/location/search/" + this.state.city;
+
+    getCityId = async (city) => {
+        this.setState({city: city});
+        let url = "https://foreca-weather.p.rapidapi.com/location/search/" + city;
         resp = await fetch(url, {
             "method": "GET",
             "headers": {
@@ -52,45 +55,69 @@ class SelectedPlaceWeatherScreen extends Component
         });
     }
 
+    WeatherForecast = () => {
+        if (this.state.loadingData > 0) {
+            return (
+                <FlatList
+                style = {this.styles.list}
+                data={[
+                    {key: "Weather: " + this.state.weather.symbolPhrase},
+                    {key: "Temperature: " + this.state.weather.temperature + "°C" },
+                    {key: "Wind Speed: " + this.state.weather.windSpeed + "m/s" },
+                    {key: 'Relative Humidity: ' + this.state.weather.relHumidity+ "%"},
+                    {key: 'Probability of Precipitation: ' + this.state.weather.precipProb + "%"},
+                    {key: 'Cloudiness: ' + this.state.weather.cloudiness},
+                    {key: 'Pressure: '+ this.state.weather.pressure + "Pa"},
+                    {key: 'Visibility: ' + this.state.weather.visibility},
+                    {key: 'UV Index: ' + this.state.weather.uvIndex},
+                    {key: 'Dew Point: ' + this.state.weather.dewPoint},
+                ]}
+                renderItem={({item}) => <Text style={this.styles.item}>{item.key}</Text>}
+            />
+            );
+        }
+        else{
+            return (
+                <Text style = {this.styles.message} >
+                    No data yet.              
+                </Text>
+            )
+        }
+    };
+
     render()
     {
+        
+
         return(
             <View style={this.styles.container}>
                 <Text style={this.styles.appTitle}>
-                    Local Weather Forecast
+                    {this.state.city} Weather Forecast
                 </Text>
     
                 <Text style={this.styles.message}>
-                Select a location to get data:
-                {/* {" "}{this.state.city}/{this.state.ubication.country} */}
-
-                <TouchableOpacity
-                    style =  {this.styles.button}
-                    onPress = {() => this.getCityId()}
-                >
-                    <Text>
-                        click me!
-                    </Text>
-                </TouchableOpacity>
-                    
+                    Introduce a place to show its data:
                 </Text>
 
-                <FlatList
-                    style = {this.styles.list}
-                    data={[
-                        {key: "Weather: " + this.state.weather.symbolPhrase},
-                        {key: "Temperature: " + this.state.weather.temperature + "°C" },
-                        {key: "Wind Speed: " + this.state.weather.windSpeed + "m/s" },
-                        {key: 'Relative Humidity: ' + this.state.weather.relHumidity+ "%"},
-                        {key: 'Probability of Precipitation: ' + this.state.weather.precipProb + "%"},
-                        {key: 'Cloudiness: ' + this.state.weather.cloudiness},
-                        {key: 'Pressure: '+ this.state.weather.pressure + "Pa"},
-                        {key: 'Visibility: ' + this.state.weather.visibility},
-                        {key: 'UV Index: ' + this.state.weather.uvIndex},
-                        {key: 'Dew Point: ' + this.state.weather.dewPoint},
-                    ]}
-                    renderItem={({item}) => <Text style={this.styles.item}>{item.key}</Text>}
+                <TextInput
+                    autoCapitalize="sentences"
+                    style={this.styles.input}
+                    placeholder="Introduce a place..."
+                    onChangeText={(textToSearch) => {
+                        this.setState({text: textToSearch});
+                        console.log("typing: " + this.state.text);
+                    }}
+                    onSubmitEditing =  {() => {
+                        this.getCityId(this.state.text);
+                        this.setState({text : ""});
+                        this.setState({loadingData: this.state.loadingData +1});
+                        }
+                    }
+                    value={this.state.text}
+                    keyboardAppearance = "dark"
                 />
+                
+                {this.WeatherForecast()}
             </View>
         )
     }
