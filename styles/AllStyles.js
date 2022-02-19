@@ -12,7 +12,8 @@ const AllStyles = {
         color: "#A7CCED",
         fontSize: 32,
         textAlign: "center",
-        marginBottom: 64,
+        marginTop: 15,
+        marginBottom: 36,
     },
 
     button:
@@ -34,6 +35,23 @@ const AllStyles = {
         marginLeft: 30,
         marginBottom: 30,
         color: 'white',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+
+    item: 
+    {
+        padding: 10,
+        fontSize: 16,
+        height: 50,
+        marginVertical: 3,
+        marginHorizontal: 8,
+        color: 'white',
+    },
+
+    list:
+    {
+        marginBottom: 5,
     }
 
 }
