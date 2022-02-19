@@ -52,7 +52,18 @@ const AllStyles = {
     list:
     {
         marginBottom: 5,
-    }
+    },
+
+    input:
+    {
+        borderRadius : 15,
+        backgroundColor :  "white",
+        color: "black",
+        width : 250,
+        margin: 10,
+        borderWidth: 2,
+        padding: 10,
+    },
 
 }
 
