@@ -28,8 +28,20 @@ const HomeScreen = ({navigation }) => {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    console.log("Start button pressed");
-                    navigation.navigate('Start');
+                    // console.log("Start button pressed");
+                    navigation.navigate('LocalWeather');
+                }}
+            >
+            <Text>
+                Get Local Weather Forecast
+            </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                    // console.log("Start button pressed");
+                    navigation.navigate('SelectedPlaceWeather');
                 }}
             >
             <Text>
