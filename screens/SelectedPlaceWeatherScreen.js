@@ -1,37 +1,25 @@
 import React, { Component, useState, useLayoutEffect  } from "react";
 import { GetStyles } from '../styles/GetStyles.js';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity } from 'react-native';
 
-class StartScreen extends Component
+class SelectedPlaceWeatherScreen extends Component
 {
     constructor(props)
     {
         super(props);
 
-        this.styles = GetStyles(["container", "appTitle", "button", "icon", "message"]);
+        this.styles = GetStyles(["container", "appTitle", "button", "icon", "message", "item", "list"]);
         this.state =
         {
-            location : "",
+            city : "Lima",
             ubication : "",
             weather : ""      
         }
-    }
-    
-
-    getIPAddress = async () => {
-        resp = await fetch('https://ipapi.co/json/')
-            .then(response => response.json())
-            .then(data => this.setState({location: data}))
-            .catch(error => console.log(error))
-            .then(() => {
-                console.log("IP Address: " + this.state.location.ip);
-            });
-
-            this.getCityId();
+        // this.getIPAddress();
     }
 
     getCityId = async () => {
-        let url = "https://foreca-weather.p.rapidapi.com/location/search/" + this.state.location.city;
+        let url = "https://foreca-weather.p.rapidapi.com/location/search/" + this.state.city;
         resp = await fetch(url, {
             "method": "GET",
             "headers": {
@@ -69,34 +57,43 @@ class StartScreen extends Component
         return(
             <View style={this.styles.container}>
                 <Text style={this.styles.appTitle}>
-                    Weather Forecast
+                    Local Weather Forecast
                 </Text>
     
                 <Text style={this.styles.message}>
-                    Hello {this.state.location.city} citizen from {this.state.ubication.country}!
-                    The Weather Forecast will be based on your location:
-                </Text>
-
-                <Text style={this.styles.message}>
-                    Temperature: {this.state.weather.temperature}°C
-                </Text>           
-
-                <Text style={this.styles.message}>
-                    Wind Speed: {this.state.weather.windSpeed} m/s
-                </Text>  
+                Select a location to get data:
+                {/* {" "}{this.state.city}/{this.state.ubication.country} */}
 
                 <TouchableOpacity
-                    onPress={this.getIPAddress}
-                    style={this.styles.button}
+                    style =  {this.styles.button}
+                    onPress = {() => this.getCityId()}
                 >
-                    <Text style={this.styles.message}>
-                        Get Data
+                    <Text>
+                        click me!
                     </Text>
                 </TouchableOpacity>
+                    
+                </Text>
 
+                <FlatList
+                    style = {this.styles.list}
+                    data={[
+                        {key: "Weather: " + this.state.weather.symbolPhrase},
+                        {key: "Temperature: " + this.state.weather.temperature + "°C" },
+                        {key: "Wind Speed: " + this.state.weather.windSpeed + "m/s" },
+                        {key: 'Relative Humidity: ' + this.state.weather.relHumidity+ "%"},
+                        {key: 'Probability of Precipitation: ' + this.state.weather.precipProb + "%"},
+                        {key: 'Cloudiness: ' + this.state.weather.cloudiness},
+                        {key: 'Pressure: '+ this.state.weather.pressure + "Pa"},
+                        {key: 'Visibility: ' + this.state.weather.visibility},
+                        {key: 'UV Index: ' + this.state.weather.uvIndex},
+                        {key: 'Dew Point: ' + this.state.weather.dewPoint},
+                    ]}
+                    renderItem={({item}) => <Text style={this.styles.item}>{item.key}</Text>}
+                />
             </View>
         )
     }
 }
 
-export default StartScreen;
+export default SelectedPlaceWeatherScreen;
