@@ -23,7 +23,7 @@ class SelectedPlaceWeatherScreen extends Component
     getCityId = async (city) => {
         this.setState({city: city});
         let url = "https://foreca-weather.p.rapidapi.com/location/search/" + city;
-        resp = await fetch(url, {
+        let resp = await fetch(url, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "foreca-weather.p.rapidapi.com",
@@ -31,17 +31,14 @@ class SelectedPlaceWeatherScreen extends Component
             } })
         .then(response => response.json())
         .then(data => this.setState({ubication: data.locations[0]}))
-        .catch(error => console.log(error))
-        .then(() => {
-            console.log("Location ID: " + this.state.ubication.id);
-        });
+        .catch(error => console.log(error));
 
         this.getWeather();
     }
 
     getWeather = async () => {
         let url2 = "https://foreca-weather.p.rapidapi.com/current/" + this.state.ubication.id + "?tempunit=C&windunit=MS";
-        resp = await fetch(url2, {
+        let resp = await fetch(url2, {
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "foreca-weather.p.rapidapi.com",
@@ -49,10 +46,7 @@ class SelectedPlaceWeatherScreen extends Component
             }  })
         .then(response => response.json())
         .then(data => this.setState({weather: data.current}))
-        .catch(error => console.log(error))
-        .then(() => {
-            console.log("Weather: " + this.state.weather.temperature);
-        });
+        .catch(error => console.log(error));
     }
 
     WeatherForecast = () => {
@@ -105,7 +99,6 @@ class SelectedPlaceWeatherScreen extends Component
                     placeholder="Introduce a place..."
                     onChangeText={(textToSearch) => {
                         this.setState({text: textToSearch});
-                        console.log("typing: " + this.state.text);
                     }}
                     onSubmitEditing =  {() => {
                         this.getCityId(this.state.text);
