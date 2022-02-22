@@ -65,6 +65,13 @@ const AllStyles = {
         padding: 10,
     },
 
+    link:
+    {
+        color: '#f72a2a',
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+    }
+
 }
 
 
